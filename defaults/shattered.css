@@ -1,0 +1,67 @@
+/* ShatteredUI theme
+ *
+ * Steam hashes its CSS class names and changes them between client builds, so every selector
+ * here matches on a prefix: [class*="appportrait_"]. These prefixes are STARTING POINTS and
+ * must be verified/adjusted with Steam's CEF DevTools (Decky Settings > Developer > enable
+ * CEF debugging, then open http://<deck-ip>:8081 and inspect the Big Picture page).
+ * Because this file is pulled from the GitHub repo, fixing selectors after a Steam update
+ * only needs a commit + version bump in manifest.json.
+ *
+ * Hooks provided by the plugin:
+ *   html.shatteredui-on / .shatteredui-square / .shatteredui-ps5
+ *   --sh-radius, --sh-tile (from the plugin's sliders)
+ */
+
+html.shatteredui-on {
+  --sh-accent: #4aa8ff;
+  --sh-bg-0: #07090d;
+  --sh-bg-1: #121722;
+  --sh-focus-scale: 1.12;
+}
+
+/* ---------- Square capsules (SteamGridDB 1:1) ----------
+ * SteamGridDB squares are stored by Steam as the "portrait capsule" asset, so the
+ * container is 2:3 and crops them. Force the container to 1:1 and cover-fit the art. */
+html.shatteredui-square [class*="appportrait_"],
+html.shatteredui-square [class*="libraryassetimage_"],
+html.shatteredui-square [class*="gamepadhomecapsule_"] {
+  aspect-ratio: 1 / 1 !important;
+  width: var(--sh-tile) !important;
+  height: var(--sh-tile) !important;
+  border-radius: var(--sh-radius) !important;
+  overflow: hidden !important;
+}
+html.shatteredui-square [class*="appportrait_"] img,
+html.shatteredui-square [class*="libraryassetimage_"] img,
+html.shatteredui-square [class*="gamepadhomecapsule_"] img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: var(--sh-radius) !important;
+}
+
+/* ---------- Focus effect: scale + glow (PS5-ish) ---------- */
+html.shatteredui-on [class*="appportrait_"],
+html.shatteredui-on [class*="libraryassetimage_"],
+html.shatteredui-on [class*="gamepadhomecapsule_"] {
+  transition: transform 140ms ease, box-shadow 140ms ease !important;
+}
+html.shatteredui-on [class*="appportrait_"].gpfocus,
+html.shatteredui-on [class*="appportrait_"]:focus-within,
+html.shatteredui-on [class*="libraryassetimage_"].gpfocus,
+html.shatteredui-on [class*="gamepadhomecapsule_"].gpfocus {
+  transform: scale(var(--sh-focus-scale)) !important;
+  box-shadow: 0 0 0 3px var(--sh-accent), 0 12px 32px rgba(0, 0, 0, 0.6) !important;
+  z-index: 5 !important;
+}
+
+/* ---------- PS5-style home ---------- */
+html.shatteredui-ps5 [class*="gamepadhome_"],
+html.shatteredui-ps5 [class*="libraryhome_"] {
+  background: radial-gradient(120% 90% at 50% 0%, var(--sh-bg-1) 0%, var(--sh-bg-0) 70%) !important;
+}
+html.shatteredui-ps5 [class*="libraryhome_"] [class*="Carousel"],
+html.shatteredui-ps5 [class*="gamepadhome_"] [class*="Carousel"] {
+  gap: 18px !important;
+  padding-left: 48px !important;
+}

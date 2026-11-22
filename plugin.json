@@ -1,0 +1,11 @@
+{
+  "name": "ShatteredUI",
+  "author": "BigHalalChickenProductions",
+  "flags": [],
+  "api_version": 1,
+  "publish": {
+    "tags": ["customization", "theme", "ui"],
+    "description": "PS5-style square-capsule home and library for Gaming Mode, themed from a GitHub repo.",
+    "image": ""
+  }
+}
